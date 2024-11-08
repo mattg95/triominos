@@ -1,0 +1,62 @@
+.triomino {
+  width: 230px;
+  height: 200px;
+  background-image: url('../../images/triomino.png');
+  background-repeat: no-repeat;
+  /* width: 0;
+    height: 0;
+    background-color: transparent;
+    border-style: solid;
+    border-left-width: 60px;
+    border-right-width: 60px;
+    border-bottom-width: 120px;
+    border-left-color: transparent;
+    border-right-color: transparent; */
+}
+
+/* DraggableTriangles.css */
+/* Add these to your existing CSS */
+.triangle-container {
+  position: absolute;
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+}
+
+.triangle-dragging {
+  cursor: grabbing;
+  transition: none !important;
+}
+
+.triangle-draggable {
+  cursor: grab;
+}
+
+.triangle {
+  transition: filter 0.2s ease;
+}
+
+.triangle:hover {
+  filter: brightness(1.1);
+}
+
+.triangle-stroke {
+  stroke: black;
+  stroke-width: 2;
+}
+
+.container {
+  width: 30%;
+  height: 30%;
+}
+
+.triangle {
+  --a: 10em;
+  --border-bottom: calc(0.866 * var(--a));
+  border-bottom: var(--border-bottom) solid brown;
+  border-left: calc(var(--a) / 2) solid transparent;
+  border-right: calc(var(--a) / 2) solid transparent;
+  border-top: 0;
+  height: 0;
+  transform: translateY(calc(-1 * 0.2887 * var(--border-bottom) * 0.5));
+  width: 0;
+}
