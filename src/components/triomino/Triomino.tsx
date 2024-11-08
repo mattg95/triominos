@@ -2,21 +2,18 @@ import React, { useState } from 'react';
 import walnut from '../../images/walnut.png';
 import Draggable from 'react-draggable';
 
-const Triomino = ({ id = 1, imageUrl }) => {
+const Triomino = ({ id = 1 }) => {
   const size = 200;
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
-  const rotationState = (rotation / 60) % 6;
-
-  // console.log(position);
+  const rotationState = rotation % 360;
 
   // Calculate points for equilateral triangle
   const height = (size * Math.sqrt(3)) / 2;
   const points = `${size / 2},0 ${size},${height} 0,${height}`;
 
   const handleMouseDown = (e) => {
-    console.log('down');
     setIsDragging(true);
 
     const { x, y } = e.target.getBoundingClientRect();
@@ -24,7 +21,6 @@ const Triomino = ({ id = 1, imageUrl }) => {
   };
 
   const handleMouseUp = (e) => {
-    console.log('mouse up');
     setIsDragging(false);
     // Rotate when releasing the click if we haven't dragged
     const { x, y } = e.target.getBoundingClientRect();
