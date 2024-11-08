@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import walnut from '../../images/walnut.png';
 import Draggable from 'react-draggable';
-import './Triomino.css';
 
 const Triomino = ({ id = 1, imageUrl }) => {
   const size = 200;
@@ -37,23 +36,23 @@ const Triomino = ({ id = 1, imageUrl }) => {
   const centerX = size / 2;
   const centerY = height / 2;
 
+  function getTanDeg(deg) {
+    const rad = (deg * Math.PI) / 180;
+    return Math.tan(rad);
+  }
+
+  const triangleCenter = (size * getTanDeg(30)) / 2;
+
   return (
-    <Draggable>
-      <div
-        className='triangle'
-        style={{
-          transform: `rotate(${rotation}deg)`,
-          transformOrigin: 'center center',
-          transition: isDragging ? 'none' : 'transform 0.3s ease',
-        }}
-      />
-      {/* <svg
+    <Draggable onMouseDown={handleMouseDown} onStop={handleMouseUp}>
+      <div style={{ border: '2px solid black' }}>
+        <svg
           width={size}
           height={height}
           className={`triangle-container ${isDragging ? 'triangle-dragging' : 'triangle-draggable'}`}
           style={{
-            transform: `rotate(${rotation}deg)`,
-            transformOrigin: 'center center',
+            transform: `rotate(${rotation}deg) translateY(${-1 * triangleCenter * 0.5}px)`,
+            transformOrigin: `${centerX}px ${centerY}px`,
             transition: isDragging ? 'none' : 'transform 0.3s ease',
           }}>
           <defs>
@@ -62,7 +61,8 @@ const Triomino = ({ id = 1, imageUrl }) => {
             </pattern>
           </defs>
           <polygon points={points} fill={`url(#pattern-${id})`} className='triangle triangle-stroke' />
-        </svg> */}
+        </svg>
+      </div>
     </Draggable>
   );
 };
