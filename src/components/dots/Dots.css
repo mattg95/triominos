@@ -1,14 +1,16 @@
-:host {
-    flex: 1;
-    margin-top: 5px;
-    margin-bottom: 5px;
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 2.5px;
+  border-color: black;
+  z-index: 10;
 }
 
 .dots {
-    display: grid;
-    height: 100%;
-    grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  height: 20px;
+  width: 20px;
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-
+  place-items: center; /* Center dots within each grid cell */
 }
-
