@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import walnut from '../../images/walnut.png';
 import Draggable from 'react-draggable';
 import Dots from '../dots/Dots.tsx';
 import { Position } from '../../types';
 import { v4 as uuid } from 'uuid';
+import useStore from '../../hooks/useStore.ts';
 
 interface Props {
-  id: number;
+  id: string;
   values: [number, number, number];
-  checkForOverlaps: (position: Position, id: string) => void;
 }
 
-const Triomino: React.FC<Props> = ({ id = 1, values, checkForOverlaps }) => {
+const Triomino: React.FC<Props> = ({ id, values }) => {
+  const defaultPosition = { x: 0, y: 0 };
+  const { state, setKeyValue } = useStore();
+  const [position, setPosition] = useState(defaultPosition);
+
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const { x, y } = ref.current?.getBoundingClientRect();
+    setKeyValue(id, { x, y });
+  }, [position]);
+
   const size = 200;
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
   const rotationState = (rotation % 360) / 60;
-
-  const uniqueId = uuid();
 
   // Calculate points for equilateral triangle
   const height = (size * Math.sqrt(3)) / 2;
@@ -30,15 +38,32 @@ const Triomino: React.FC<Props> = ({ id = 1, values, checkForOverlaps }) => {
     const { x, y } = e.target.getBoundingClientRect();
     setPosition({ x, y });
   };
+  console.log(state);
 
   const handleMouseUp = (e) => {
     setIsDragging(false);
     // Rotate when releasing the click if we haven't dragged
-    const { x, y } = e.target.getBoundingClientRect();
+    const { x, y } = ref.current.getBoundingClientRect();
+    setPosition({ x, y });
+
     if (position?.x === x && position?.y === y) {
       setRotation((prevRotation) => prevRotation + 60);
     }
+
+    Object.entries(state)?.forEach(([key, val]) => {
+      if (key !== id) {
+        console.log(y, val.y);
+        if (roundTo10(x) === roundTo10(val.x)) {
+          console.log('x matches');
+        }
+        if (roundTo10(y) === roundTo10(val.y)) {
+          console.log('y matches');
+        }
+      }
+    });
   };
+
+  const roundTo10 = (n) => Math.ceil(n / 10) * 10;
 
   const centerX = size / 2;
   const centerY = height / 2;
@@ -50,14 +75,9 @@ const Triomino: React.FC<Props> = ({ id = 1, values, checkForOverlaps }) => {
 
   const triangleCenter = (size * getTanDeg(30)) / 2;
 
-  const dragHandler = (e: DragEvent, data) => {
-    console.log('', rotationState);
-    checkForOverlaps({ x: data.lastX, y: data.lastY }, uniqueId);
-  };
-
   return (
-    <Draggable onMouseDown={handleMouseDown} onStop={handleMouseUp} onDrag={dragHandler}>
-      <div className='triomino' id={uniqueId}>
+    <Draggable defaultPosition={defaultPosition} onMouseDown={handleMouseDown} onStop={handleMouseUp}>
+      <div style={{ border: '1px solid black' }} className='triomino' id={id} ref={ref}>
         <svg
           width={size}
           height={height}
