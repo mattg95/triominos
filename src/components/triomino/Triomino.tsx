@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import walnut from '../../images/walnut.png';
 import Draggable from 'react-draggable';
 import Dots from '../dots/Dots.tsx';
+import { Position } from '../../types';
+import { v4 as uuid } from 'uuid';
 
 interface Props {
   id: number;
   values: [number, number, number];
+  checkForOverlaps: (position: Position, id: string) => void;
 }
 
-const Triomino: React.FC<Props> = ({ id = 1, values }) => {
+const Triomino: React.FC<Props> = ({ id = 1, values, checkForOverlaps }) => {
   const size = 200;
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
-  const rotationState = rotation % 360;
+  const rotationState = (rotation % 360) / 60;
+
+  const uniqueId = uuid();
 
   // Calculate points for equilateral triangle
   const height = (size * Math.sqrt(3)) / 2;
@@ -45,9 +50,14 @@ const Triomino: React.FC<Props> = ({ id = 1, values }) => {
 
   const triangleCenter = (size * getTanDeg(30)) / 2;
 
+  const dragHandler = (e: DragEvent, data) => {
+    console.log('', rotationState);
+    checkForOverlaps({ x: data.lastX, y: data.lastY }, uniqueId);
+  };
+
   return (
-    <Draggable onMouseDown={handleMouseDown} onStop={handleMouseUp}>
-      <div style={{ border: '2px solid black' }}>
+    <Draggable onMouseDown={handleMouseDown} onStop={handleMouseUp} onDrag={dragHandler}>
+      <div className='triomino' id={uniqueId}>
         <svg
           width={size}
           height={height}

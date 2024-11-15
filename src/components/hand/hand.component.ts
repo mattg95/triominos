@@ -27,25 +27,20 @@ export class Hand {
   public newDominoValues: number[];
   @Input() isComputer = false;
 
-  constructor(
-    private root: ElementRef,
-    private handPositionService: HandPositionService
-  ) {}
+  constructor(private root: ElementRef, private handPositionService: HandPositionService) {}
 
   ngOnInit(): void {
     // Subscribe to the data$ Observable from the shared service
-    this.dominoSubscription = this.handPositionService.newDomino$.subscribe(
-      (data) => {
-        if (data.isPlayersTurn === this.isComputer) {
-          const newDomino = this.container.createComponent(Domino);
-          this.container.insert(newDomino.hostView);
+    this.dominoSubscription = this.handPositionService.newDomino$.subscribe((data) => {
+      if (data.isPlayersTurn === this.isComputer) {
+        const newDomino = this.container.createComponent(Domino);
+        this.container.insert(newDomino.hostView);
 
-          this.newDominoValues = data.values;
-          newDomino.instance.values = this.newDominoValues;
-          this.emitPosition();
-        }
+        this.newDominoValues = data.values;
+        newDomino.instance.values = this.newDominoValues;
+        this.emitPosition();
       }
-    );
+    });
     this.handPositionService.registerHand(this);
   }
 
@@ -55,7 +50,6 @@ export class Hand {
 
   private emitPosition() {
     const rect = this.root.nativeElement.getBoundingClientRect();
-    console.log('rect here;', rect);
     this.handPositionService.setHandPosition(rect);
   }
 
