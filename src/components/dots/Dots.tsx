@@ -12,21 +12,21 @@ const Dots: React.FC<Props> = ({ value, index }) => {
   const getPosition = () => {
     switch (index) {
       case 0:
-        return 'translate(480,60)';
+        return 'translate(495,60)';
       case 1:
         return 'translate(660,660)';
       case 2:
-        return 'translate(150,660)';
+        return 'translate(320,640)';
     }
   };
   const getSkew = () => {
     switch (index) {
       case 0:
-        return 'skewX(20)';
+        return 'skewX(7)';
       case 1:
         return 'skewX(30)';
       case 2:
-        return 'skewX(-30)';
+        return 'skewY(20)';
     }
   };
 
@@ -37,7 +37,7 @@ const Dots: React.FC<Props> = ({ value, index }) => {
       case 1:
         return 'rotate(0)';
       case 2:
-        return 'rotate(0)';
+        return 'rotate(90)';
     }
   };
   const getColour = () => {

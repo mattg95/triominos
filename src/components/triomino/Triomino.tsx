@@ -35,7 +35,7 @@ const Triomino: React.FC<Props> = ({ id, values }) => {
   const handleMouseDown = (e) => {
     setIsDragging(true);
 
-    const { x, y } = e.target.getBoundingClientRect();
+    const { x, y } = ref.current.getBoundingClientRect();
     setPosition({ x, y });
   };
   console.log(state);

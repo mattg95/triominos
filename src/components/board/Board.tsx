@@ -14,7 +14,7 @@ const Board = () => {
   return (
     <div id='board' className='board' style={{ width: '100' }}>
       <Triomino values={[0, 4, 5]} id={'1'} />
-      <Triomino values={[1, 3, 3]} id={'2'} />
+      <Triomino values={[3, 3, 3]} id={'2'} />
       {/*<Triomino values={[2, 4, 3]}  />
       <Triomino values={[5, 0, 1]}  />
       <Triomino values={[4, 2, 4]}  />
